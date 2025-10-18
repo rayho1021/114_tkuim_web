@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人作品集 - Ray Ho</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* 自訂顏色變數 */
+        :root {
+            --primary-color: #5a7c95;  /* 灰藍色主色 */
+            --secondary-color: #8da4b8; /* 淺灰藍 */
+            --light-bg: #f8f9fa;
+            --text-muted: #6c757d;
+        }
+        
+        /* 導航列透明效果 */
+        .navbar {
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.85) !important;
+            backdrop-filter: blur(15px);
+        }
+        
+        .navbar-light .navbar-nav .nav-link {
+            color: var(--primary-color);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            padding: 8px 16px !important;
+            margin: 0 2px;
+        }
+        
+        .navbar-light .navbar-nav .nav-link:hover {
+            color: var(--secondary-color);
+            background: rgba(90, 124, 149, 0.1);
+        }
+        
+        .navbar-light .navbar-nav .nav-link.active {
+            background: var(--primary-color);
+            color: white !important;
+        }
+        
+        .navbar-brand {
+            color: var(--primary-color) !important;
+            font-weight: bold;
+        }
+        
+        /* 自訂 CSS - 卡片懸停效果 */
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e9ecef;
+            border-radius: 15px !important;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(90, 124, 149, 0.15);
+        }
+        
+        /* 卡片圖片圓角 */
+        .card-img-top {
+            border-radius: 15px 15px 0 0 !important;
+        }
+        
+        /* 平滑滾動 */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Hero Section 背景 - 灰藍漸層 */
+        .hero-section {
+            background: linear-gradient(135deg, #5a7c95 0%, #8da4b8 100%);
+            color: white;
+        }
+        
+        /* 按鈕自訂樣式 */
+        .btn-custom-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .btn-custom-primary:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-custom-outline {
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .btn-custom-outline:hover {
+            background-color: white;
+            color: var(--primary-color);
+        }
+        
+        /* 文字顏色調整 */
+        .text-custom-primary {
+            color: var(--primary-color) !important;
+        }
+        
+        /* Modal 自訂樣式 */
+        .modal-content {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .modal-body img {
+            border-radius: 0;
+        }
+        
+        .modal-header {
+            position: absolute;
+            right: 0;
+            z-index: 1000;
+        }
+        
+        .btn-close {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            opacity: 0.8;
+            margin: 10px;
+        }
+        
+        .btn-close:hover {
+            opacity: 1;
+        }
+        
+        /* Badge 自訂顏色 */
+        .badge-custom {
+            background-color: var(--secondary-color);
+        }
+        
+        /* 技能等級 Badge 樣式 */
+        .badge-level-expert {
+            background-color: var(--primary-color);
+        }
+        
+        .badge-level-advanced {
+            background-color: var(--secondary-color);
+        }
+        
+        .badge-level-intermediate {
+            background-color: #a8b8c8;
+        }
+    </style>
+</head>
+<body>
+    <!-- 1. 導航列 -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">Ray Ho</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">首頁</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">關於</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#skills">技能</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#portfolio">作品</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">聯絡</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 2. Hero Section -->
+    <section id="home" class="hero-section py-5 mt-5">
+        <div class="container">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-12 text-center">
+                    <h1 class="display-3 fw-bold mb-4">你好，我是 Ray Ho</h1>
+                    <p class="lead fs-4 mb-5">積極外向、勇於挑戰、觀察敏銳且善於聆聽<br>目標成為能解決複雜企業問題的顧問，喜歡音樂、閱讀和運動</p>
+                    <div class="d-flex gap-3 justify-content-center flex-wrap">
+                        <a href="#portfolio" class="btn btn-light btn-lg px-4">查看作品集</a>
+                        <button class="btn btn-custom-outline btn-lg px-4">下載履歷</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. 關於我 Section -->
+    <section id="about" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5 display-5 fw-bold">關於我</h2>
+            <div class="row align-items-center">
+                <div class="col-md-4 text-center mb-4 mb-md-0">
+                    <img src="Me.JPG" alt="個人照片" class="img-fluid rounded-circle shadow">
+                </div>
+                <div class="col-md-8">
+                    <h3 class="fw-bold text-custom-primary mb-3">淡江大學 資訊管理學系四年級 學生</h3>
+                    <p class="text-muted fs-5 lh-lg">
+                        Hi, 我是Ray! 目前就讀淡江大學資訊管理學系四年級，擁有 [數位轉型實務 × 技術實作 × 跨產業技術服務] 經驗，擅長 [雲端服務架構 × 解決方案設計 × 跨領域協作]。
+                        <br> <br> 我的目標是成為一位同時具備商業思維和技術能力的跨領域人才，最大發揮出我的核心特質：「敏銳的觀察」讓我能發現不易察覺的需求；「邏輯思考能力」讓我能設計系統性的解決方案；而「溝通協調能力」則確保我能跨部門推動專案落地。
+                    </p>
+                    <p class="text-secondary fs-6 lh-base">
+                        從高中時期擔任教官室文書助理，到大學期間多次團隊競賽獲獎，再到實習期間主導自動化專案，我的每一步都在累積解決複雜問題的能力，督促自己提出的每一個解決方案，都是源自於對需求的深度理解，並與人產生共鳴，帶來影響力。
+                    </p>
+                    <div class="mt-4">
+                        <span class="badge badge-custom me-2 p-2">創新思維</span>
+                        <span class="badge badge-custom me-2 p-2">團隊合作</span>
+                        <span class="badge badge-custom me-2 p-2">持續學習</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. 技能展示 Section -->
+    <section id="skills" class="py-5 bg-white">
+        <div class="container">
+            <h2 class="text-center mb-5 display-5 fw-bold">專業技能</h2>
+            <div class="row">
+                <!-- 技能卡片 1 -->
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <h4 class="card-title">雲端架構服務(GCP、AWS)</h4>
+                            <p class="card-text text-muted">具備基本雲端架構概念與產業實作經驗。曾協助跨 9 個產業 GCP 技術支援和商務諮詢工作。曾於學校修習 AWS、Azure 相關課程。</p>
+                            <div class="mt-3">
+                                <span class="badge badge-level-advanced p-2 fs-6">進階</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 技能卡片 2 -->
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <h4 class="card-title">解決方案設計</h4>
+                            <p class="card-text text-muted">善於主動發現問題，能快速理解深層需求。善於找到共同語言，快速掌握合作節奏。曾多次領導跨校跨系團隊競賽，實習期間跨三個部門以及與跨國團隊合作專案。</p>
+                            <div class="mt-3">
+                                <span class="badge badge-level-intermediate p-2 fs-6">中級</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 技能卡片 3 -->
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <h4 class="card-title">程式語言</h4>
+                            <p class="card-text text-muted">Python：ETL數據處理、爬蟲、小型後端開發。Java：資料結構實作。HTML/CSS/JS：網頁開發、Chrome擴充、GAS自動化腳本。</p>
+                            <div class="mt-3">
+                                <span class="badge badge-level-intermediate p-2 fs-6">中級</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. 作品集 Section -->
+    <section id="portfolio" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5 display-5 fw-bold">作品集</h2>
+            <div class="alert alert-light border text-center mb-4" role="alert">
+                點擊下方作品了解更多細節
+            </div>
+            <div class="row">
+                <!-- 作品 1 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">GCP 雲端自動帳務系統</h5>
+                            <p class="card-text text-muted">針對產業客戶需求，設計自動帳務處理系統，將人工作業時間從 3-7 天縮短至 2-4 小時，作業效率提升 90%，失誤率減少 80%。</p>
+                            <div class="mb-3">
+                                <span class="badge bg-secondary me-1">Python</span>
+                                <span class="badge bg-secondary me-1">Cloud Run</span>
+                                <span class="badge bg-secondary me-1">BigQuery</span>
+                            </div>
+                            <a href="#" class="btn btn-custom-primary btn-sm" data-bs-toggle="modal" data-bs-target="#portfolioModal1">查看詳情</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- 作品 2 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Super Mario on AWS</h5>
+                            <p class="card-text text-muted">使用學校資源自學AWS服務後，我想選個有趣、能學習AWS服務，又能讓大家都體驗一下的東西，最終選了這個主題。</p>
+                            <div class="mb-3">
+                                <span class="badge bg-secondary me-1">AWS</span>
+                                <span class="badge bg-secondary me-1">ECS</span>
+                                <span class="badge bg-secondary me-1">Fargate</span>
+                            </div>
+                            <a href="#" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#portfolioModal2">查看詳情</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- 作品 3 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">永續報告書RPA專案</h5>
+                            <p class="card-text text-muted">為合作企業設計 RPA 解決方案，優化永續部門和人力部門作業流程。</p>
+                            <div class="mb-3">
+                                <span class="badge bg-secondary me-1">RPA</span>
+                                <span class="badge bg-secondary me-1">UiPath</span>
+                                <span class="badge bg-secondary me-1">Excel</span>
+                            </div>
+                            <a href="#" class="btn btn-custom-primary btn-sm" data-bs-toggle="modal" data-bs-target="#portfolioModal3">查看詳情</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. 聯絡表單 Section -->
+    <section id="contact" class="py-5 bg-white">
+        <div class="container">
+            <h2 class="text-center mb-5 display-5 fw-bold">聯絡我</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <form>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">姓名</label>
+                            <input type="text" class="form-control" id="name" placeholder="請輸入您的姓名" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="your.email@example.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">主旨</label>
+                            <input type="text" class="form-control" id="subject" placeholder="請輸入主旨" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">訊息內容</label>
+                            <textarea class="form-control" id="message" rows="5" placeholder="請輸入您想說的話..." required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-custom-primary btn-lg px-5">送出訊息</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="text-center">
+                <div class="mb-3">
+                    <a href="mailto:rechun5147@gmail.com" class="text-white text-decoration-none me-3">Email</a>
+                    <a href="https://www.linkedin.com/in/rayho-1021-profile" target="_blank" class="text-white text-decoration-none me-3">LinkedIn</a>
+                    <a href="https://github.com/rayho1021" target="_blank" class="text-white text-decoration-none">GitHub</a>
+                </div>
+                <p class="mb-0">&copy; 2024 Ray Ho. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Portfolio Modals -->
+    <!-- Modal 1 - GCP 雲端自動帳務系統 -->
+    <div class="modal fade" id="portfolioModal1" tabindex="-1" aria-labelledby="portfolioModal1Label" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <!-- 作品圖片 -->
+                    <img src="https://via.placeholder.com/800x400" class="img-fluid w-100" alt="GCP雲端自動帳務系統">
+                    
+                    <!-- 作品內容 -->
+                    <div class="p-4">
+                        <h3 class="text-custom-primary mb-3">GCP 雲端自動帳務系統 (工作專案)</h3>
+                        
+                        <h5 class="fw-bold mb-2">我的角色與貢獻：</h5>
+                        <ul class="text-muted">
+                            <li><strong>解決方案架構師</strong>：主導設計從簡單工具到一個系統的演進</li>
+                            <li><strong>技術諮詢</strong>：和沒有資訊背景的業務解釋可行性和達成方式</li>
+                            <li><strong>技術開發</strong>：參與開發</li>
+                            <li><strong>專案管理</strong>：推動整個專案進程，從主動問題發現、提案，到協調三個部門的需求與資源整合，以及擴展到跨區域團隊(香港)採用</li>
+                        </ul>
+                        
+                        <h5 class="fw-bold mb-2 mt-3">專案成果：</h5>
+                        <ul class="text-muted">
+                            <li>總計優化 11 個作業流程</li>
+                            <li>作業時間：從3-7天人工時間，縮短至3-4小時，效率提升 90%</li>
+                            <li>準確性：降低人為錯誤，錯誤率降低了80%，提升作業品質</li>
+                            <li>影響力：方案被實際採用，並且擴展至跨區域團隊(香港)</li>
+                        </ul>
+                        
+                        <div class="mt-3 mb-4">
+                            <h5 class="fw-bold mb-2">使用技術：</h5>
+                            <span class="badge bg-secondary me-2 mb-2">Python</span>
+                            <span class="badge bg-secondary me-2 mb-2">Cloud Run</span>
+                            <span class="badge bg-secondary me-2 mb-2">BigQuery</span>
+                            <span class="badge bg-secondary me-2 mb-2">Cloud Scheduler</span>
+                            <span class="badge bg-secondary me-2 mb-2">Google Apps Script</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2 - Super Mario on AWS -->
+    <div class="modal fade" id="portfolioModal2" tabindex="-1" aria-labelledby="portfolioModal2Label" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <!-- 作品圖片 -->
+                    <img src="https://via.placeholder.com/800x400" class="img-fluid w-100" alt="Super Mario on AWS">
+                    
+                    <!-- 作品內容 -->
+                    <div class="p-4">
+                        <h3 class="text-custom-primary mb-3">將經典遊戲 Super Mario 部署至 AWS</h3>
+                        <p class="text-muted lh-lg">
+                            使用學校資源自學一些AWS服務後，我想選個有趣、能學習AWS服務，又能讓大家都體驗一下的東西，最終選了這個主題。透過這個專案，我深入了解了容器化技術和AWS的雲端服務架構，並成功將經典遊戲部署到雲端平台上。
+                        </p>
+                        
+                        <div class="mt-3 mb-4">
+                            <h5 class="fw-bold mb-2">使用技術：</h5>
+                            <span class="badge bg-secondary me-2 mb-2">AWS</span>
+                            <span class="badge bg-secondary me-2 mb-2">ECS</span>
+                            <span class="badge bg-secondary me-2 mb-2">Fargate</span>
+                            <span class="badge bg-secondary me-2 mb-2">ECR</span>
+                        </div>
+                        
+                        <div class="text-center">
+                            <a href="https://github.com/rayho1021/super-mario-on-aws" target="_blank" class="btn btn-custom-primary me-2">
+                                GitHub 專案
+                            </a>
+                            <a href="https://docs.google.com/document/d/1wmbh5QENNwfd5nnKAYs_erP2F_JSJmwEoUZDOrs5urI/edit?tab=t.0" target="_blank" class="btn btn-outline-secondary">
+                                專案文件
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3 - 永續報告書RPA專案 -->
+    <div class="modal fade" id="portfolioModal3" tabindex="-1" aria-labelledby="portfolioModal3Label" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <!-- 作品圖片 -->
+                    <img src="https://via.placeholder.com/800x400" class="img-fluid w-100" alt="永續報告書RPA專案">
+                    
+                    <!-- 作品內容 -->
+                    <div class="p-4">
+                        <h3 class="text-custom-primary mb-3">STP21-ESG部門永續報告書RPA專案</h3>
+                        <p class="text-muted lh-lg">
+                            我在2023年參與了STP這個計畫第21屆，成果發表是一個為期兩個月的企業和合作專案，我們的合作企業是：邁達特數位 (MetaAge)，任務是設計 RPA 解決方案，優化永續部門和人力部門作業流程。這次是與不同背景的人團隊合作，接觸實際產業，並設計真實的解決方案，這些經驗現在微不足道，但卻是我見識職場的啟蒙。
+                        </p>
+                        
+                        <h5 class="fw-bold mb-2">扮演角色：</h5>
+                        <p class="text-muted">負責技術實作，設計自動化流程架構。</p>
+                        
+                        <h5 class="fw-bold mb-2">專案成果：</h5>
+                        <p class="text-muted">成本節省 91.7%，專案競賽獲得第三名。</p>
+                        
+                        <div class="mt-3 mb-4">
+                            <h5 class="fw-bold mb-2">使用技術：</h5>
+                            <span class="badge bg-secondary me-2 mb-2">RPA</span>
+                            <span class="badge bg-secondary me-2 mb-2">UiPath</span>
+                            <span class="badge bg-secondary me-2 mb-2">Excel</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 導航列滾動效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // 導航列 active 狀態追蹤
+        window.addEventListener('scroll', function() {
+            let current = '';
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 100)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+        
+        // 點擊導航連結時添加 active 狀態
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
