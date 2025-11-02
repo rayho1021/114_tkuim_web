@@ -26,6 +26,8 @@
 /* 密碼強度條 */
 #password-strength {
     border-radius: 0.25rem;
+    height: 5px; 
+    transition: width 0.3s ease; 
 }
 .strength-weak { background-color: var(--bs-danger); width: 33%; }
 .strength-medium { background-color: var(--bs-warning); width: 66%; }

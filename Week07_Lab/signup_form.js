@@ -16,44 +16,45 @@ const passwordInput = document.getElementById('password');
 const confirmPasswordInput = document.getElementById('confirmPassword');
 const strengthBar = document.getElementById('password-strength');
 
-
-/* 檢查密碼強度 1:弱, 2:中, 3:強 */
+/* 檢查密碼強度 1:弱, 2:中(>= 8 且英數混合), 3:強(>= 12) */
 function checkPasswordStrength(password) {
-    let score = 0;
-    if (password.length >= 8) score++; 
-    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++; // 大小寫混合
-    if (/\d/.test(password) && /[^A-Za-z0-9]/.test(password)) score++; // 數字和特殊符號
+    if (password.length === 0) {
+        return 0;
+    }
+    const hasLetters = /[a-zA-Z]/.test(password);
+    const hasDigits = /\d/.test(password);
 
-    // 滿足英數混合和長度條件，判斷為「中」或「強」
-    if (password.length >= 8 && (/[a-zA-Z]/.test(password) && /\d/.test(password))) {
-        if (password.length >= 12) score = 3; 
-        else score = 2;
-    } else if (password.length >= 8) {
-        score = 1;
-    } else {
-        score = 0;
+    if (password.length >= 8 && hasLetters && hasDigits) {
+        if (password.length >= 12) {
+            return 3;
+        }
+        return 2;
+    } 
+    if (password.length >= 8) {
+        return 1;
     }
 
-    return score;
+    return 0; // 其他情況（長度 < 8）
 }
 
 /* 更新密碼強度條的視覺效果 */
 function updateStrengthBar() {
     const password = passwordInput.value;
     const strength = checkPasswordStrength(password);
-    strengthBar.className = 'mt-1 small'; // 重置 class
+    strengthBar.classList.remove('strength-weak', 'strength-medium', 'strength-strong'); 
 
-    if (password.length === 0) {
+    if (strength > 0) {
+        if (strength === 1) {
+            strengthBar.classList.add('strength-weak');
+        } else if (strength === 2) {
+            strengthBar.classList.add('strength-medium');
+        } else if (strength === 3) {
+            strengthBar.classList.add('strength-strong');
+        }
+
+        strengthBar.style.width = ''; 
+    } else {
         strengthBar.style.width = '0%';
-        return;
-    }
-
-    if (strength === 1) {
-        strengthBar.classList.add('strength-weak');
-    } else if (strength === 2) {
-        strengthBar.classList.add('strength-medium');
-    } else if (strength === 3) {
-        strengthBar.classList.add('strength-strong');
     }
 }
 
@@ -160,22 +161,20 @@ form.addEventListener('submit', async (event) => {
     if (selectedTags === 0) {
         isFormValid = false;
         if (!firstInvalid) {
-            firstInvalid = tagsContainer; // 如果輸入欄位都沒錯，第一個錯誤就是標籤區塊
+            firstInvalid = tagsContainer; // 如果輸入欄位都沒錯，第一個錯誤就是標籤區塊，聚焦第一個錯誤
         }
     }
 
-    // 聚焦第一個錯誤
     if (firstInvalid) {
         firstInvalid.focus(); 
         return;
     }
 
-    // 成功送出流程：防重送 (Disabled/Loading) + 模擬延遲
+    // 成功送出流程：防重送 (Disabled/Loading) + 模擬延遲，顯示成功訊息並重置表單
     submitBtn.disabled = true;
     submitBtn.textContent = '註冊中...';
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    
-    // 顯示成功訊息並重置表單
+
     alert('會員註冊成功！歡迎加入。');
     form.reset();
     submitBtn.disabled = false;
