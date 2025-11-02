@@ -1,0 +1,32 @@
+/* 錯誤訊息 */
+.error-message {
+    color: var(--bs-danger);
+    font-size: 0.875em;
+    height: 1.2em;
+    margin-top: 0.25rem;
+}
+
+/* 興趣標籤 */
+.tag {
+    cursor: pointer;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+    border: 1px solid #ced4da;
+    background-color: #f8f9fa;
+    transition: all 0.2s;
+}
+
+/* 選中狀態 */
+.tag.selected {
+    background-color: var(--bs-primary);
+    color: white;
+    border-color: var(--bs-primary);
+}
+
+/* 密碼強度條 */
+#password-strength {
+    border-radius: 0.25rem;
+}
+.strength-weak { background-color: var(--bs-danger); width: 33%; }
+.strength-medium { background-color: var(--bs-warning); width: 66%; }
+.strength-strong { background-color: var(--bs-success); width: 100%; }
