@@ -1,7 +1,8 @@
 # 會員註冊表單
 
-## 專案概述
+## 概述
 - 此專案整合了 DOM 事件委派、Constraint Validation API、客製化中文錯誤訊息。
+- 包含檔案：`signup_form.html`、`signup_form.js`、`styles.css`、(畫面截圖) `ScreenShot1-4`。
 - 主要功能包括 : **即時驗證**、**送出攔截**和**防重送機制**。
 
 
