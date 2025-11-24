@@ -1,12 +1,8 @@
-//  送出流程改為呼叫 fetch
-
-// 定義 API 端點
-const API_URL = 'http://localhost:3001/api/signup';
 const form = document.getElementById('signup-form');
 const submitBtn = document.getElementById('submitBtn');
 const resetBtn = document.getElementById('resetBtn');
 
-// 需要即時驗證的欄位 (除了 Tags)
+// 需要即時驗證的欄位 (除了 Checkbox 和 Tags)
 const inputFields = [
     { input: document.getElementById('name'), error: document.getElementById('name-error') },
     { input: document.getElementById('email'), error: document.getElementById('email-error') },
@@ -18,7 +14,6 @@ const inputFields = [
 
 const passwordInput = document.getElementById('password');
 const confirmPasswordInput = document.getElementById('confirmPassword');
-const tagsContainer = document.getElementById('interest-tags-container');
 const strengthBar = document.getElementById('password-strength');
 
 /* 檢查密碼強度 1:弱, 2:中(>= 8 且英數混合), 3:強(>= 12) */
@@ -68,7 +63,7 @@ function validateField(field) {
     const { input, error } = field;
     let message = '';
 
-    // Constraint Validation API 內建驗證
+    // 1. Constraint Validation API 內建驗證
     if (input.validity.valueMissing) {
         message = '此欄位為必填。';
     } else if (input.id === 'email' && input.validity.typeMismatch) {
@@ -79,7 +74,7 @@ function validateField(field) {
         const password = input.value;
         if (input.validity.tooShort) {
             message = '密碼長度至少需要 8 碼。';
-        } else if (password.length > 0 && !(/[a-zA-Z]/.test(password) && /\d/.test(password))) {  // 檢查是否為英數混合
+        } else if (!(/[a-zA-Z]/.test(password) && /\d/.test(password))) {  // 檢查是否為英數混合
             message = '密碼必須包含英文字母和數字。';
         }
     }
@@ -92,14 +87,11 @@ function validateField(field) {
     // 興趣標籤驗證
     const selectedTags = document.querySelectorAll('#interest-tags-container .tag.selected').length;
     const tagsErrorElement = document.getElementById('tags-error');
-    if (tagsErrorElement) {
-        if (selectedTags === 0) {
-            tagsErrorElement.textContent = '請至少選擇 1 個興趣標籤。';
-        } else {
-            tagsErrorElement.textContent = '';
-        }
+    if (selectedTags === 0) {
+        tagsErrorElement.textContent = '請至少選擇 1 個興趣標籤。';
+    } else {
+        tagsErrorElement.textContent = '';
     }
-
 
     // 更新 DOM，設定自訂錯誤訊息
     input.setCustomValidity(message); 
@@ -110,29 +102,7 @@ function validateField(field) {
         input.classList.remove('is-invalid'); 
     }
     
-    // 返回是否通過驗證
-    return !message; 
-}
-
-
-/* 收集表單數據並轉換為 API 所需的 JSON 格式 */
-function collectFormData() {
-    const formData = new FormData(form);
-    const data = {};
-    
-    // 遍歷所有欄位
-    for (const [key, value] of formData.entries()) {
-        data[key] = value;
-    }
-
-    // 處理特殊欄位：interests (多選標籤)
-    const selectedInterests = Array.from(tagsContainer.querySelectorAll('.tag.selected')).map(tag => tag.dataset.value);
-    data.interests = selectedInterests;
-
-    // 處理特殊欄位：terms (Checkbox，確保是布林值)
-    data.terms = formData.has('terms');
-    
-    return data;
+    return !message; // 根據是否有錯誤訊息來判斷是否通過
 }
 
 /* 事件處理 */
@@ -157,25 +127,24 @@ inputFields.forEach((field) => {
 });
 
 // 事件委派：興趣標籤，狀態改變後，重新驗證標籤區塊
+const tagsContainer = document.getElementById('interest-tags-container');
 tagsContainer.addEventListener('click', (event) => {
     const target = event.target;
     if (target.classList.contains('tag')) {
         target.classList.toggle('selected');
-        // 觸發驗證
         validateField({ input: { id: 'tags' }, error: document.getElementById('tags-error') });
     }
 });
 
 
-
-// 使用 fetch 搭配 async/await 提交
+// 送出攔截與防重送，執行所有欄位驗證
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     let firstInvalid = null;
     let isFormValid = true;
 
-    // 執行前端驗證
+    // 驗證輸入欄位和 Checkbox
     inputFields.forEach((field) => {
         const isValid = validateField(field);
         if (!isValid) {
@@ -192,68 +161,25 @@ form.addEventListener('submit', async (event) => {
     if (selectedTags === 0) {
         isFormValid = false;
         if (!firstInvalid) {
-            firstInvalid = tagsContainer; // 如果輸入欄位都沒錯，第一個錯誤就是標籤區塊
+            firstInvalid = tagsContainer; // 如果輸入欄位都沒錯，第一個錯誤就是標籤區塊，聚焦第一個錯誤
         }
     }
 
-    if (!isFormValid) {
-        // 如果前端驗證失敗，聚焦第一個錯誤欄位並停止提交
-        if (firstInvalid) {
-            firstInvalid.focus(); 
-        }
+    if (firstInvalid) {
+        firstInvalid.focus(); 
         return;
     }
 
-    // 前端驗證通過，提交 API
+    // 成功送出流程：防重送 (Disabled/Loading) + 模擬延遲，顯示成功訊息並重置表單
     submitBtn.disabled = true;
     submitBtn.textContent = '註冊中...';
-    
-    const payload = collectFormData();
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    try {
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload) 
-        });
-
-        // 嘗試解析 JSON (無論狀態碼如何)
-        const result = await response.json();
-
-        // 處理 API 回應，根據狀態碼顯示不同訊息
-        if (response.ok) { 
-            const participant = result.participant;
-            const infoString = [
-                `姓名: ${participant.name}`,
-                `Email: ${participant.email}`,
-                `電話: ${participant.phone}`,
-                `興趣: ${participant.interests.join('、')}`,
-            ].join('\n');
-
-            const successMessage = `${result.message}!\n\n報名資訊 :\n${infoString}`;
-
-            alert(successMessage);
-            form.reset();
-            resetFormStyles(); // 重設表單狀態和樣式
-            
-        } else if (response.status === 400) {
-            alert(`註冊失敗：${result.error}`);
-            
-        } else {
-            alert(`伺服器錯誤 (狀態碼 ${response.status})：${result.error || '未知伺服器錯誤'}`);
-        }
-
-    } catch (error) {
-        // 處理網路錯誤或解析錯誤
-        alert('網路請求失敗。請檢查您的伺服器是否已啟動並運行在 http://localhost:3001。');
-        console.error('Fetch 錯誤:', error);
-    } finally {
-        // 流程結束，解鎖按鈕
-        submitBtn.disabled = false;
-        submitBtn.textContent = '註冊';
-    }
+    alert('會員註冊成功！歡迎加入。');
+    form.reset();
+    submitBtn.disabled = false;
+    submitBtn.textContent = '註冊';
+    resetFormStyles();
 });
 
 // 重設按鈕功能、所有錯誤訊息、樣式和密碼強度條、興趣標籤(.tag.selected)
