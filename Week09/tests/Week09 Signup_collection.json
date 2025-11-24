@@ -1,0 +1,41 @@
+{
+	"info": {
+		"_postman_id": "7623865a-686d-4835-b492-5b25742cd0a6",
+		"name": "Week09 Signup",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50303680",
+		"_collection_link": "https://rechun5147-4542791.postman.co/workspace/ray's-Team's-Workspace~db7969ef-d9f7-46b8-8ef1-a4ed5015f51a/collection/50303680-7623865a-686d-4835-b492-5b25742cd0a6?action=share&source=collection_link&creator=50303680"
+	},
+	"item": [
+		{
+			"name": "test post",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"測試同學\",\r\n  \"email\": \"test@example.com\",\r\n  \"phone\": \"0912345678\",\r\n  \"password\": \"abc12345\",\r\n  \"confirmPassword\": \"abc12345\",\r\n  \"interests\": [\"前端\", \"後端\"],\r\n  \"terms\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/signup",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
