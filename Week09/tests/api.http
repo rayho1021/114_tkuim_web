@@ -1,7 +1,7 @@
-### 狀態檢查
+// 狀態檢查
 GET http://localhost:3001/health
 
-### 建立報名
+// 建立報名
 POST http://localhost:3001/api/signup
 Content-Type: application/json
 
@@ -15,5 +15,5 @@ Content-Type: application/json
   "terms": true
 }
 
-### 查看清單
+// 查看清單
 GET http://localhost:3001/api/signup
