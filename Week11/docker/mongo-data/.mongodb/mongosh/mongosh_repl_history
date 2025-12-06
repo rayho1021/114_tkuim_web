@@ -1,0 +1,3 @@
+db.participants.find()
+use week11
+show dbs
