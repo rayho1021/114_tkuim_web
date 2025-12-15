@@ -1,3 +1,18 @@
 db.participants.find()
 use week11
+db.participants.find()
+use week11
+db.participants.find()
+use week11
+show db
+show dbs
+db.participants.find()
+use week11
+show dbs
+db.participants.find()
+show dbs
+use week11
+show dbs
+db.participants.find()
+use week11
 show dbs
