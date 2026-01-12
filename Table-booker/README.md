@@ -36,13 +36,24 @@
 
 ## 5. 安裝與執行指引
 
-### 環境需求
+### 環境準備
+- Git
 - Docker
 - Node.js (v18+)
 
-### 步驟 1：啟動環境與資料庫
+### 步驟 1：下載專案
+開啟終端機，執行以下指令將專案下載至您的本機：
+```bash
+# 複製倉庫
+git clone https://github.com/您的用戶名/您的倉庫名.git
 
-在專案根目錄執行以下指令，啟動 MongoDB：
+# 進入專案資料夾
+cd Table-booker
+```
+
+### 步驟2 : 啟動環境與資料庫
+
+本專案採用容器化技術管理資料庫，請確保 Docker 已開啟，並在專案根目錄執行以下指令啟動 MongoDB：
 ```bash
 # 啟動 Docker 容器
 docker-compose up -d
@@ -51,43 +62,41 @@ docker-compose up -d
 docker ps
 ```
 
-### 步驟 2：後端設定與管理員初始化
-進入後端目錄進行套件安裝，並建立一個初始管理員帳號：
-```bash
-# 進入後端目錄
-cd backend
+### 步驟 3：後端設定與管理員初始化
 
-# 安裝相依套件
+進入後端目錄進行套件安裝，為了確保管理後台安全，先手動建立一個初始管理員帳號：
+```bash
+# 進入後端目錄並安裝相依套件
+cd backend
 npm install
 
-# (選) 修改 .env 檔案設定 JWT_SECRET 與 MONGO_URI
-
-# 執行初始化腳本 (將 admin 帳號寫入 MongoDB)
+# 初始化管理員 (執行一次即可)，預設帳號: admin / 預設密碼: adminpassword123
 node seedAdmin.js
-```
-註：執行 seedAdmin.js 後，預設帳號為 admin，密碼為 adminpassword123。
 
-### 步驟 3：啟動後端伺服器
-```bash
-# 啟動 Server
+# 啟動後端伺服器
 npm run dev
+
 ```
-成功後，終端機應顯示 MongoDB 連線成功
+註：成功後，終端機應顯示 MongoDB 連線成功
 
 ### 步驟 4：前端設定與啟動
+
 開啟另一個終端機，進入前端目錄：
 ```bash
-# 進入前端目錄
+# 進入前端目錄並安裝相依套件
 cd ../frontend
-
-# 安裝相依套件
 npm install
 
-# 啟動 Vite 開發伺服器
+# 啟動前端開發環境
 npm run dev
 ```
 啟動後，請訪問終端機顯示的網址（通常為: http://localhost:5173）。
 
+### 步驟 5 : 開始使用
+``` bash
+顧客預約頁面 : 瀏覽器開啟 http://localhost:5173
+後臺管理頁面 : 瀏覽器開啟 http://localhost:5173/admin
+```
 
 ## 6. 常見錯誤
 1. CORS 阻擋：已在後端配置 cors() 中間件允許前端跨網域請求。
