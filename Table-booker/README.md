@@ -26,13 +26,61 @@
 
 - 認證機制：JWT (JSON Web Token) 非狀態化驗證，使用 Bcrypt 加密管理員密碼。
 
-## 4. 使用技術說明
+### 目錄結構
+```
+Table-booker/
+├── backend/              
+│   ├── controllers/                # 邏輯處理 (主要 API 邏輯)
+│   │   └── bookingCtrl.js          # 處理預約查詢、新增、狀態更新
+│   ├── middleware/                 # 中間層
+│   │   └── auth.js                 # JWT 權限驗證攔截器
+│   ├── models/                     # 資料庫模型 (Mongoose Schema)
+│   │   ├── Reservation.js          # 預約資料模型
+│   │   └── User.js                 # 管理員帳號與 Bcrypt 加密邏輯
+│   ├── routes/                     # API 路由定義
+│   │   ├── authRoutes.js           # 登入相關路由
+│   │   └── bookingRoutes.js        # 預約管理相關路由
+│   ├── .env                        # 環境變數 (MONGO_URI, JWT_SECRET)
+│   ├── seedAdmin.js                # 管理員帳號初始化腳本
+│   ├── server.js                   # 後端入口檔案
+│   └── package.json                # 後端相依套件清單
+│
+├── frontend/              
+│   ├── src/
+│   │   ├── pages/                      # 主要頁面組件
+│   │   │   ├── CustomerView.jsx        # 顧客預約入口
+│   │   │   ├── AdminView.jsx           # 管理看板 (含狀態更新功能)
+│   │   │   └── Login.jsx               # 管理員登入頁面
+│   │   ├── App.jsx                     # 前端路由配置中心
+│   │   └── main.jsx                    # 前端入口檔案
+│   ├── tailwind.config.js              # Tailwind CSS 配置
+│   └── package.json                    # 前端相依套件清單
+│
+├── docker-compose.yml              # Docker 容器編排
+├── README.md                       # 專案說明文件 
+└── api-spec.md                     # API 規格文件
+```
 
-### 核心設計亮點：
-- 採用 MongoDB, Express, React, Node.js 的 MERN Stack 全端架構 : 核心優勢在於全端均使用 JavaScript，減少了開發時語言切換的上下文開銷，且 MongoDB 的 JSON 格式文件非常適合儲存變動快速的預約資料。
-- 後端二次驗證：在預約寫入資料庫前，後端會再次執行 `countDocuments`，徹底杜絕因前端延遲導致的超額預約。
+## 4. 核心技術使用說明
 
-- 無狀態認證：採用 JWT Token 儲存於 LocalStorage，減少伺服器負擔。
+- 採用 MongoDB, Express, React, Node.js 的 MERN Stack 全端架構 :   
+核心優勢在於全端均使用 JavaScript，減少了開發時語言切換的上下文開銷，且 MongoDB 的 JSON 格式文件非常適合儲存變動快速的預約資料。
+
+- 分離分層架構：  
+    - 前端 (frontend) 與後端 (backend) 徹底分離，便於未來分別部署或擴展。
+    - 後端採用 Models (資料)、Routes (路由)、Controllers (邏輯) 的分層方式，結構清晰且易於維護。
+
+- Middleware 設計：  
+將 auth.js 抽離至中間層，實現了切面導向 (AOP) 的設計思想，只要在路由中加入即可完成權限保護。
+
+- 容器化支援：   
+根目錄下的 docker-compose.yml 統一管理基礎設施
+
+- 後端二次驗證：  
+在預約寫入資料庫前，後端會再次執行 `countDocuments`，徹底杜絕因前端延遲導致的超額預約。
+
+- 無狀態認證：  
+採用 JWT Token 儲存於 LocalStorage，減少伺服器負擔。
 
 ## 5. 安裝與執行指引
 
