@@ -10,8 +10,11 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await axios.post('http://localhost:5000/api/auth/login', credentials);
-      localStorage.setItem('adminToken', res.data.token); // 儲存通行證
-      navigate('/admin'); // 登入成功，前往後台
+        if (res.data.token) {
+        localStorage.setItem('adminToken', res.data.token);
+        // 💡 加上一個小延遲或直接跳轉，確保 AdminView 渲染時能抓到新 Token
+        window.location.href = '/admin'; 
+        }
     } catch (err) {
       alert(err.response?.data?.message || "登入失敗");
     }
