@@ -7,13 +7,19 @@ const AdminView = () => {
   const [loading, setLoading] = useState(true);
 
   const fetchAll = async () => {
+    const token = localStorage.getItem('adminToken'); // 從瀏覽器拿通行證
+    if (!token) {
+      navigate('/login');
+      return;
+    }
+  
     try {
-      const res = await axios.get('http://localhost:5000/api/bookings/admin/all');
+      const res = await axios.get('http://localhost:5000/api/bookings/admin/all', {
+        headers: { Authorization: `Bearer ${token}` } // 放在 Header 裡
+      });
       setReservations(res.data);
-      setLoading(false);
     } catch (err) {
-      alert("無法獲取預約資料");
-      setLoading(false);
+      if (err.response?.status === 401) navigate('/login'); // Token 失效就去登入
     }
   };
 
